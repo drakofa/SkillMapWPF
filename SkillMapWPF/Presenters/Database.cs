@@ -1,6 +1,7 @@
-﻿using System.Configuration;
+﻿using Microsoft.Data.SqlClient;
+using SkillMapWPF.Models;
+using System.Configuration;
 using System.Data;
-using Microsoft.Data.SqlClient;
 
 namespace SkillMapWPF.Presenters
 {
@@ -164,6 +165,69 @@ namespace SkillMapWPF.Presenters
                     connection.Open();
                     adapter.Fill(table);
                     return table;
+                }
+            }
+        }
+        public int CreateCompany(string companyName, string taxNumber, string typeName, int userId)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("CreateCompanySimple", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Добавляем параметры согласно SQL-процедуре
+                    command.Parameters.Add("@CompanyName", SqlDbType.NVarChar, 100).Value = companyName;
+                    command.Parameters.Add("@TaxNumber", SqlDbType.NVarChar, 12).Value = taxNumber;
+                    command.Parameters.Add("@CompanyTypeName", SqlDbType.NVarChar, 30).Value = typeName;
+                    command.Parameters.Add("@CreatedByUserId", SqlDbType.Int).Value = userId;
+
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    return result != null ? Convert.ToInt32(result) : 0;
+                }
+            }
+        }
+
+        public int GetCompanyIdByUserId(int userId)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                // Ищем компанию, созданную этим пользователем
+                string query = "SELECT CompanyId FROM Company WHERE CreatedByUserId = @UserId";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    return result != null ? Convert.ToInt32(result) : 0;
+                }
+            }
+        }
+        public int CreateVacancy(Vacancy vacancy, string empTypeName, string scheduleName, string formatName)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("CreateVacancy", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@VacancyTitle", vacancy.VacancyTitle);
+                    command.Parameters.AddWithValue("@VacancyDescription", (object)vacancy.VacancyDescription ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@MinSalary", (object)vacancy.MinSalary ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@MaxSalary", (object)vacancy.MaxSalary ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@RequiredExperience", (object)vacancy.RequiredExperience ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Location", (object)vacancy.Location ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@CompanyId", vacancy.CompanyId);
+
+                    // Передаем строки для поиска ID внутри SQL
+                    command.Parameters.AddWithValue("@EmploymentTypeName", empTypeName);
+                    command.Parameters.AddWithValue("@WorkScheduleName", scheduleName);
+                    command.Parameters.AddWithValue("@WorkFormatName", formatName);
+
+                    connection.Open();
+                    var result = command.ExecuteScalar();
+                    return result != null ? Convert.ToInt32(result) : 0;
                 }
             }
         }

@@ -46,6 +46,11 @@ namespace SkillMapWPF.Views
                     MessageBox.Show("Вход в панель для анализа");
                     NavigationService.Navigate(new AnalystDashboardPage());
                 }
+                else if (UserSession.RoleId == 4) //создатель компании
+                {
+                    MessageBox.Show("Вход в панель для создании компании");
+                    NavigationService.Navigate(new CreateCompanyPage());
+                }
                 else if (UserSession.RoleId == 1) // Администратор
                 {
                     MessageBox.Show("Вход в панель администратора");

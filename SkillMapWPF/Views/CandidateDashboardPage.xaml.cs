@@ -71,6 +71,12 @@ namespace SkillMapWPF.Views
             _currentPage++;
             LoadData();
         }
+        private void CreateVacancy_Click(object sender, RoutedEventArgs e)
+        {
+            // Навигация на страницу создания вакансии
+            // Вам нужно будет создать страницу CreateVacancyPage
+            NavigationService.Navigate(new CreateVacancyPage());
+        }
 
         private void PrevPage_Click(object sender, RoutedEventArgs e)
         {

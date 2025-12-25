@@ -4,7 +4,19 @@
       Title="Панель Кандидата">
     <Grid Background="#F5F5F5">
         <StackPanel Margin="30">
-            <TextBlock Text="Список доступных резюме" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Foreground="#333"/>
+            <DockPanel LastChildFill="False" Margin="0,0,0,20">
+                <TextBlock Text="Список доступных резюме" FontSize="24" FontWeight="Bold" Foreground="#333" DockPanel.Dock="Left"/>
+
+                <Button x:Name="BtnCreateVacancy" 
+                        Content="+ Создать вакансию" 
+                        Width="160" 
+                        Height="35" 
+                        Background="#27AE60" 
+                        Foreground="White" 
+                        FontWeight="Bold"
+                        Click="CreateVacancy_Click" 
+                        DockPanel.Dock="Right"/>
+            </DockPanel>
 
             <ScrollViewer Height="300" VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="ResumeContainer">

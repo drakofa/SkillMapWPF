@@ -1,77 +1,84 @@
-﻿using SkillMapWPF.Presenters;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using SkillMapWPF.Presenters;
 
 namespace SkillMapWPF.Views
 {
-    /// <summary>
-    /// Логика взаимодействия для CandidateDashboardPage.xaml
-    /// </summary>
     public partial class CandidateDashboardPage : Page
     {
-        
-
-        private int currentPage = 0;
-        private const int ItemsPerPage = 5;
+        private int _currentPage = 0;
+        private const int _pageSize = 5; // Сколько резюме на одной странице
 
         public CandidateDashboardPage()
         {
             InitializeComponent();
-            LoadResumes();
+            LoadData();
         }
 
-        private void LoadResumes()
+        private void LoadData()
         {
-            ResumeContainer.Children.Clear();
-            Database db = new Database();
-
-            // Запрос на получение резюме (можно добавить OFFSET/FETCH для пагинации в SQL)
-            string query = "SELECT ResumeId, Specialty FROM Resume";
-            DataTable dt = db.GetData(query);
-
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                Button btn = new Button
-                {
-                    Content = row["Specialty"].ToString(),
-                    Tag = row["ResumeId"], // Сохраняем ID внутри кнопки
-                    Height = 40,
-                    Margin = new Thickness(0, 5, 0, 5)
-                };
-                btn.Click += ResumeButton_Click;
-                ResumeContainer.Children.Add(btn);
-            }
-        }
+                ResumeContainer.Children.Clear();
+                Database db = new Database();
 
-        private void ResumeButton_Click(object sender, RoutedEventArgs e)
-        {
-            Button clickedButton = (Button)sender;
-            int resumeId = (int)clickedButton.Tag;
-            MessageBox.Show($"Открываем резюме с ID: {resumeId}");
+                // Получаем данные через наше представление
+                DataTable dt = db.GetResumesPaged(_currentPage * _pageSize, _pageSize);
+
+                if (dt.Rows.Count == 0 && _currentPage > 0)
+                {
+                    _currentPage--; // Возвращаемся, если данных больше нет
+                    return;
+                }
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    // Создаем красивую кнопку для каждого резюме
+                    Button resumeBtn = new Button
+                    {
+                        Height = 60,
+                        Margin = new Thickness(0, 0, 0, 10),
+                        HorizontalContentAlignment = HorizontalAlignment.Left,
+                        Padding = new Thickness(10),
+                        // Сохраняем ID, чтобы потом открыть полное резюме
+                        Tag = row["ResumeId"]
+                    };
+
+                    string specialty = row["Specialty"].ToString();
+                    string salary = row["DesiredSalary"] != DBNull.Value ? row["DesiredSalary"].ToString() : "0";
+
+                    resumeBtn.Content = $"{specialty} — Ожидаемая ЗП: {salary} руб.";
+                    resumeBtn.Click += (s, e) => {
+                        MessageBox.Show($"Открытие резюме ID: {((Button)s).Tag}");
+                    };
+
+                    ResumeContainer.Children.Add(resumeBtn);
+                }
+
+                PageNumber.Text = $"Страница {_currentPage + 1}";
+                BtnPrev.IsEnabled = _currentPage > 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка загрузки резюме: " + ex.Message);
+            }
         }
 
         private void NextPage_Click(object sender, RoutedEventArgs e)
         {
-            currentPage++;
-            LoadResumes(); // Здесь должна быть логика смещения (OFFSET) в SQL
+            _currentPage++;
+            LoadData();
         }
 
         private void PrevPage_Click(object sender, RoutedEventArgs e)
         {
-            if (currentPage > 0) currentPage--;
-            LoadResumes();
+            if (_currentPage > 0)
+            {
+                _currentPage--;
+                LoadData();
+            }
         }
-
     }
 }

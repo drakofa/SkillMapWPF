@@ -108,5 +108,28 @@ namespace SkillMapWPF.Presenters
                 }
             }
         }
+        public DataTable GetVacanciesPaged(int skip, int take)
+        {
+            // Запрос к вашему представлению VacancyDetails
+            string query = @"
+     SELECT VacancyId, VacancyTitle, CompanyName, SalaryRange, Location, WorkFormat 
+    FROM VacancyDetails 
+    ORDER BY VacancyId 
+    OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Skip", skip);
+                    command.Parameters.AddWithValue("@Take", take);
+
+                    DataTable table = new DataTable();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(table);
+                    return table;
+                }
+            }
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace SkillMapWPF.Views
                 MessageBox.Show("Успешный вход!");
                 // Сохраняем в сессию (если создали класс UserSession)
                 // UserSession.UserId = userId;
-                NavigationService.Navigate(new CandidateDashboardPage());
+                NavigationService.Navigate(new VacanciesPage());
                 // Переход на страницу личного кабинета
                 // NavigationService.Navigate(new HomePage());
             }

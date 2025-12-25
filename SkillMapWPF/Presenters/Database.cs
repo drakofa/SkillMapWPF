@@ -42,23 +42,22 @@ namespace SkillMapWPF.Presenters
 
             return table;
         }
-        public int Login(string email, string password)
+        public DataRow LoginAndGetProfile(string email, string password)
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            // Используем ваше представление для получения ID и Роли
+            string query = "SELECT UserID, FirstName, RoleName, RoleId FROM UserProfile WHERE Email = @email AND PasswordHash = @pass";
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                using (SqlCommand command = new SqlCommand("AuthenticateUser", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@pass", password); // В идеале здесь должен быть хэш
 
-                    // Важно использовать NVarChar для Email, если там могут быть спецсимволы
-                    command.Parameters.Add("@Email", SqlDbType.NVarChar, 50).Value = email;
-                    command.Parameters.Add("@PasswordHash", SqlDbType.NVarChar, 200).Value = password;
+                DataTable dt = new DataTable();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
 
-                    connection.Open();
-                    object result = command.ExecuteScalar();
-
-                    return result != null ? (int)result : 0;
-                }
+                return dt.Rows.Count > 0 ? dt.Rows[0] : null;
             }
         }
         public int RegisterUser(string firstName, string lastName, string email, string phone, string password, string roleCode)
@@ -128,6 +127,28 @@ namespace SkillMapWPF.Presenters
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     adapter.Fill(table);
                     return table;
+                }
+            }
+        }
+
+        public int CreateResume(int userId, string specialty, string description, int experience, int salary)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("CreateResume", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.Add("@UserId", SqlDbType.Int).Value = userId;
+                    command.Parameters.Add("@Specialty", SqlDbType.NVarChar, 100).Value = specialty;
+                    command.Parameters.Add("@ResumeDescription", SqlDbType.NVarChar, 1000).Value = description;
+                    command.Parameters.Add("@UserExperience", SqlDbType.Int).Value = experience;
+                    command.Parameters.Add("@DesiredSalary", SqlDbType.Int).Value = salary;
+                    // Статус по умолчанию 'Активное' прописан в самой процедуре
+
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    return result != null ? Convert.ToInt32(result) : 0;
                 }
             }
         }

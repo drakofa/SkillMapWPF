@@ -85,7 +85,12 @@ namespace SkillMapWPF.Views
                 MessageBox.Show("Ошибка: " + ex.Message);
             }
         }
-
+        private void CreateResume_Click(object sender, RoutedEventArgs e)
+        {
+            // Переход на страницу создания резюме
+            // Предполагается, что вы создадите класс CreateResumePage
+            NavigationService.Navigate(new CreateResumePage());
+        }
         private void Next_Click(object sender, RoutedEventArgs e) { _page++; LoadVacancies(); }
         private void Prev_Click(object sender, RoutedEventArgs e) { if (_page > 0) { _page--; LoadVacancies(); } }
     }

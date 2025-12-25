@@ -4,7 +4,25 @@
       Title="Доступные вакансии">
     <Grid Background="#F0F2F5">
         <StackPanel Margin="20">
-            <TextBlock Text="Актуальные вакансии" FontSize="26" FontWeight="ExtraBold" Margin="0,0,0,20" Foreground="#2C3E50"/>
+            <DockPanel LastChildFill="False" Margin="0,0,0,20">
+                <TextBlock Text="Актуальные вакансии" FontSize="26" FontWeight="ExtraBold" Foreground="#2C3E50" DockPanel.Dock="Left"/>
+                
+                <Button x:Name="BtnCreateResume" 
+                        Content="Создать резюме" 
+                        Width="150" 
+                        Height="35" 
+                        Background="#3498DB" 
+                        Foreground="White" 
+                        FontWeight="Bold"
+                        Click="CreateResume_Click" 
+                        DockPanel.Dock="Right">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </DockPanel>
 
             <ScrollViewer Height="320" VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="VacanciesContainer">

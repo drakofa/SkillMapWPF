@@ -1,0 +1,21 @@
+﻿<Page x:Class="SkillMapWPF.Views.CandidateDashboardPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Панель Кандидата">
+    <Grid Background="#F5F5F5">
+        <StackPanel Margin="30">
+            <TextBlock Text="Список доступных резюме" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Foreground="#333"/>
+
+            <ScrollViewer Height="300" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="ResumeContainer">
+                </StackPanel>
+            </ScrollViewer>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <Button x:Name="BtnPrev" Content="⬅ Назад" Width="100" Height="35" Click="PrevPage_Click" Margin="5"/>
+                <TextBlock x:Name="PageNumber" Text="Страница 1" VerticalAlignment="Center" Margin="15,0"/>
+                <Button x:Name="BtnNext" Content="Вперед ➡" Width="100" Height="35" Click="NextPage_Click" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -7,22 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Label  Content="Email" HorizontalAlignment="Left" Margin="620,105,0,0" VerticalAlignment="Top" Width="160"/>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="620,171,0,0" VerticalAlignment="Top" Width="160"/>
-        <TextBox x:Name="LoginEmail" HorizontalAlignment="Left" Margin="620,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Height="29"/>
-        <TextBox x:Name="LoginPassword" HorizontalAlignment="Left" Margin="620,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="160" Height="29"/>
-        <Button Content="Login" HorizontalAlignment="Left" Margin="620,322,0,0" VerticalAlignment="Top" Width="160" Height="48" Click="LoginButton_Click"/>
-        <TextBox x:Name="RegisterFirstName" HorizontalAlignment="Left" Margin="10,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="148" Height="25"/>
-        <Label Content="FirstName" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="148"/>
-        <Label Content="LastName" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top" Width="148"/>
-        <TextBox x:Name="RegisterLastName" HorizontalAlignment="Left" Margin="10,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="148" Height="29"/>
-        <Label Content="Email" HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" Width="148"/>
-        <TextBox x:Name="RegisterEmail" HorizontalAlignment="Left" Margin="10,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="148" Height="34"/>
-        <Label Content="Phone" HorizontalAlignment="Left" Margin="10,255,0,0" VerticalAlignment="Top" Width="148"/>
-        <TextBox x:Name="RegisterPhone" HorizontalAlignment="Left" Margin="10,284,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="148" Height="30"/>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="10,191,0,0" VerticalAlignment="Top" Width="148"/>
-        <TextBox x:Name="RegisterPassWord" HorizontalAlignment="Left" Margin="10,222,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" Height="33"/>
-        <Button Content="Register" HorizontalAlignment="Left" Margin="10,319,0,0" VerticalAlignment="Top" Height="51" Width="179" Click="RegisterButton_Click"/>
-
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>

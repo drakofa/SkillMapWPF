@@ -85,5 +85,28 @@ namespace SkillMapWPF.Presenters
                 }
             }
         }
+        public DataTable GetResumesPaged(int skip, int take)
+        {
+            // Используем ваше представление ResumeDetails
+            string query = @"
+        SELECT ResumeId, Specialty, DesiredSalary, UserExperience 
+        FROM ResumeDetails 
+        ORDER BY CreatedDate DESC 
+        OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Skip", skip);
+                    command.Parameters.AddWithValue("@Take", take);
+
+                    DataTable table = new DataTable();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(table);
+                    return table;
+                }
+            }
+        }
     }
 }

@@ -22,63 +22,64 @@ namespace SkillMapWPF
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Navigate(new SkillMapWPF.Views.LoginRegisterPage());
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
-        {
-            string email = LoginEmail.Text;
-            string password = LoginPassword.Text;
+        //private void LoginButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    string email = LoginEmail.Text;
+        //    string password = LoginPassword.Text;
 
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)) 
-            {
-                MessageBox.Show("поля пустуют");
-                return;
-            }
-            Database db = new Database();
-            int useerID = db.Login(email, password);
-            if (useerID > 0)
-            {
-                MessageBox.Show("Успешный вход!");
-                // Здесь можно открыть главное окно приложения и передать туда userId
-                // MainWindow main = new MainWindow(userId);
-                // main.Show();
-                // this.Close();
-            }
-            else
-            {
-                MessageBox.Show("Неверный Email или пароль");
-            }
-        }
+        //    if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)) 
+        //    {
+        //        MessageBox.Show("поля пустуют");
+        //        return;
+        //    }
+        //    Database db = new Database();
+        //    int useerID = db.Login(email, password);
+        //    if (useerID > 0)
+        //    {
+        //        MessageBox.Show("Успешный вход!");
+        //        // Здесь можно открыть главное окно приложения и передать туда userId
+        //        // MainWindow main = new MainWindow(userId);
+        //        // main.Show();
+        //        // this.Close();
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Неверный Email или пароль");
+        //    }
+        //}
 
-        private void RegisterButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Database db = new Database();
+        //private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        Database db = new Database();
 
-                // В реальном приложении здесь должен быть хеш от пароля! но не сегодня)))
-                string password = RegisterPassWord.Text;
+        //        // В реальном приложении здесь должен быть хеш от пароля! но не сегодня)))
+        //        string password = RegisterPassWord.Text;
 
-                int newId = db.RegisterUser(
-                    RegisterFirstName.Text,
-                    RegisterLastName.Text,
-                    RegisterEmail.Text,
-                    RegisterPhone.Text,
-                    password,
-                    "CANDIDATE" // Передаем код роли для поиска ID внутри SQL
-                );
+        //        int newId = db.RegisterUser(
+        //            RegisterFirstName.Text,
+        //            RegisterLastName.Text,
+        //            RegisterEmail.Text,
+        //            RegisterPhone.Text,
+        //            password,
+        //            "CANDIDATE" // Передаем код роли для поиска ID внутри SQL
+        //        );
 
-                if (newId > 0)
-                {
-                    MessageBox.Show($"Регистрация успешна! Ваш ID: {newId}");
-                    // Переходим к авторизации или в личный кабинет
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка регистрации: " + ex.Message);
-            }
-        }
+        //        if (newId > 0)
+        //        {
+        //            MessageBox.Show($"Регистрация успешна! Ваш ID: {newId}");
+        //            // Переходим к авторизации или в личный кабинет
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Ошибка регистрации: " + ex.Message);
+        //    }
+        //}
 
 
 

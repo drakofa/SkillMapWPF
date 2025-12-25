@@ -152,5 +152,20 @@ namespace SkillMapWPF.Presenters
                 }
             }
         }
+        public DataTable ExecuteReportStoredProcedure(string procedureName)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(procedureName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    DataTable table = new DataTable();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    connection.Open();
+                    adapter.Fill(table);
+                    return table;
+                }
+            }
+        }
     }
 }
